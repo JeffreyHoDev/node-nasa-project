@@ -6,16 +6,22 @@ on:
     branches: [ main ]
 jobs:
   build: 
+    env: # Environment variables
+      CI: true # This will makes create-react-app know it is CI environment, and disable watch mode in Jest
+    strategy:
+      matrix: 
+        node-version: [14.x, 16.x] # Create two build jobs in parallel
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 # pre-made actions from github actions that share
-      - name: Use Node.js version 20
+      - name: Use Node.js version ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with: 
-          node-version: '20'  # give specific version
+          node-version: ${{ matrix.node-version }}  # give specific version
       - run: npm install
       - run: npm run install-server
       - run: npm run install-client
       - run: npm run build --prefix client
+      - run: npm test
   #deploy:
    # needs: build # Default github action will run these jobs in parallel, so put needs property will tell it start after build finish and succeed
