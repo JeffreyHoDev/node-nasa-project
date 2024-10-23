@@ -2,6 +2,7 @@ const request = require('supertest')
 
 const app = require("../../app") // The server
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo")
+const { loadPlanetsData } = require("../../models/planets.model")
 
 
 describe("Launches API", () => {
@@ -9,6 +10,7 @@ describe("Launches API", () => {
     // First argument is the callback that need to run first
     beforeAll(async () => {
         await mongoConnect()
+        await loadPlanetsData()
     })
 
     afterAll(async () => {
