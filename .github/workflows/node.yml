@@ -8,9 +8,11 @@ jobs:
   build: 
     env: # Environment variables
       CI: true # This will makes create-react-app know it is CI environment, and disable watch mode in Jest
+      MONGO_URL: mongodb://localhost/nasa
     strategy:
       matrix: 
         node-version: [20.x, 16.x, 14.x] # Create two build jobs in parallel, using latest of the version
+        mongodb-version: ['4.2', '4.4']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 # pre-made actions from github actions that share
@@ -18,6 +20,10 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: ${{ matrix.node-version }}  # give specific version
+      - name: Use MongoDB from Github Actions
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: ${{matrix.mongodb-version}}
       - run: npm install
       - run: npm run install-server
       - run: npm run install-client
