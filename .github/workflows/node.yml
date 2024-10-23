@@ -10,7 +10,7 @@ jobs:
       CI: true # This will makes create-react-app know it is CI environment, and disable watch mode in Jest
     strategy:
       matrix: 
-        node-version: [14.x, 16.x] # Create two build jobs in parallel
+        node-version: [20.x, 16.x, 14.x] # Create two build jobs in parallel, using latest of the version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3 # pre-made actions from github actions that share
